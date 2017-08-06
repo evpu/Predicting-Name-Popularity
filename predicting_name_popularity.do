@@ -1,4 +1,11 @@
-* using Stata
+* ************************************************************************
+* Predicting name popularity using data from
+* https://catalog.data.gov/dataset/baby-names-from-social-security-card-applications-national-level-data
+*
+* https://github.com/evpu
+* ************************************************************************
+
+* Load data
 clear all
 
 * Convert data from TXT file
@@ -21,23 +28,23 @@ forval i=1880/2013{
 }
 
 
-
 * ************************************************************************
 * Graph 1: Jacqueline
+* ************************************************************************
 use clean, clear
 keep if name=="Jacqueline" & gender=="F"
 tsset year
 gen lady_Jacqueline=15000 if  year>= 1961 &  year <= 1963
 
-local options graphregion(c(white)lw(thick)lc(white)) legend(size(small) region(lw(thick)lc(white))) ylabel(, angle(0)) 
+local options graphregion(c(white)lw(thick)lc(white)) legend(size(small) region(lw(thick)lc(white))) ylabel(, angle(0))
 
 twoway (area lady_Jacqueline year, fintensity(inten20) color(pink) lcolor(white) lw(none)) (tsline obs, lw(medthick) lc(cranberry)), ytitle("") ttitle("") `options' xlabel(1900[10]2010, labsize(small)) ylabel(0[1000]15000, labsize(small)) legend(order(1 "Jacqueline Kennedy as the First Lady (1961-1963)"))
 graph export "Jacqueline.eps"
 
 
 * ************************************************************************
-
 * Graph 2: Emily
+* ************************************************************************
 clear all
 use clean
 keep if name=="Emily" & gender=="F"
@@ -74,8 +81,8 @@ graph save Emily, replace
 
 
 * ************************************************************************
-
 * Graph 2: Daniel
+* ************************************************************************
 clear all
 use clean
 keep if name=="Daniel" & gender=="M"
@@ -113,6 +120,7 @@ graph save Daniel, replace
 
 * ************************************************************************
 * Combine graphs for Emily and Daniel
+* ************************************************************************
 
 graph combine "Daniel.gph" "Emily.gph", graphregion(c(white)lw(thick)lc(white))
 graph export "Daniel_Emily.eps"
